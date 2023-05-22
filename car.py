@@ -22,12 +22,12 @@ class Car:
             self.angolo -= self.vel_rot
 
     # Movimenti avanti e indietro
-    def move_forward(self, vel_max):
-        self.vel_max = vel_max
+    def move_forward(self):
+        self.vel_max = 2
         self.move()
 
-    def move_backward(self, vel_max):
-        self.vel = vel_max
+    def move_backward(self):
+        self.vel = -2
         self.move()
 
     # Movimento legato proprio al fatto che può ruotare
@@ -51,8 +51,8 @@ class Car:
         return intersezione
     
     # Rimbalzo
-    def rimbalzo(self,):
-        self.vel= -self.vel
+    def rimbalzo(self, vel):
+        self.vel= vel
         self.move()
 
     # Disegno macchina su schermo

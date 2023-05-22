@@ -44,12 +44,12 @@ while True:
         P1.rotazione(left=True)
 
     if keys[K_UP]:
-        P1.move_forward(2)
+        P1.move_forward()
     else:
         P1.stop()
 
     if keys[K_DOWN]:
-        P1.move_backward(-2)
+        P1.move_backward()
     else:
         P1.stop()
 
@@ -61,12 +61,12 @@ while True:
         P2.rotazione(left=True)
 
     if keys[K_w]:
-        P2.move_forward(2)
+        P2.move_forward()
     else:
         P2.stop()
 
     if keys[K_s]:
-        P2.move_backward(-2)
+        P2.move_backward()
     else:
         P2.stop()
 
