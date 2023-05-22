@@ -22,8 +22,6 @@ bordo_circuito_mask= pygame.mask.from_surface(bordo_circuito)
 # Classi Car e Pista
 P1= Car(screen, rossa, (930, 350), (20, 35))
 P2= Car(screen, blu, (900, 350), (20, 35))
-#pista= Pista(screen, circuito, (0, 0), (850, 700))
-#bordo_pista= Pista(screen, bordo_circuito, (0, 0), (850, 700))
 
 # Ciclo fondamentale con aggiunta tasti
 while True:

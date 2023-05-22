@@ -23,7 +23,7 @@ class Car:
 
     # Movimenti avanti e indietro
     def move_forward(self):
-        self.vel_max = 2
+        self.vel = 2
         self.move()
 
     def move_backward(self):
@@ -51,8 +51,8 @@ class Car:
         return intersezione
     
     # Rimbalzo
-    def rimbalzo(self, vel):
-        self.vel= vel
+    def rimbalzo(self):
+        self.vel= -2
         self.move()
 
     # Disegno macchina su schermo
