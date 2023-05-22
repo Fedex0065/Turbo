@@ -27,7 +27,7 @@ class Car:
         self.move()
 
     def move_backward(self):
-        self.vel = -2
+        self.vel = -1
         self.move()
 
     # Movimento legato proprio al fatto che può ruotare
