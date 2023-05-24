@@ -23,7 +23,7 @@ class Car:
 
     # Movimenti avanti e indietro
     def move_forward(self):
-        self.vel = 2
+        self.vel = 3
         self.move()
 
     def move_backward(self):
@@ -52,7 +52,7 @@ class Car:
     
     # Rimbalzo
     def rimbalzo(self):
-        self.vel= -2
+        self.vel= -3
         self.move()
 
     # Disegno macchina su schermo
