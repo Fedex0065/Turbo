@@ -92,3 +92,4 @@ while True:
     # Aggiorno schermo e clock
     pygame.display.flip()
     clock.tick(60)
+    
