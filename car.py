@@ -51,8 +51,11 @@ class Car:
         return intersezione
     
     # Rimbalzo
-    def rimbalzo(self):
-        self.vel= -3
+    def rimbalzo(self, mov):
+        if mov > 0:
+            self.vel= -3
+        else:
+            self.vel= 2
         self.move()
 
     # Disegno macchina su schermo

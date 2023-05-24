@@ -43,11 +43,13 @@ while True:
 
     if keys[K_UP]:
         P1.move_forward()
+        P1mov=1
     else:
         P1.stop()
 
     if keys[K_DOWN]:
         P1.move_backward()
+        P1mov=-1
     else:
         P1.stop()
 
@@ -60,11 +62,13 @@ while True:
 
     if keys[K_w]:
         P2.move_forward()
+        P2mov=1
     else:
         P2.stop()
 
     if keys[K_s]:
         P2.move_backward()
+        P2mov=-1
     else:
         P2.stop()
 
@@ -82,10 +86,10 @@ while True:
 
     # Collisione
     if P1.collisione(bordo_circuito_mask, 0, 0) != None:
-        P1.rimbalzo()
+        P1.rimbalzo(P1mov)
     
     if P2.collisione(bordo_circuito_mask, 0, 0) != None:
-        P2.rimbalzo()
+        P2.rimbalzo(P2mov)
 
     # Aggiorno schermo e clock
     pygame.display.flip()
