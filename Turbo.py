@@ -76,8 +76,6 @@ while True:
     screen.fill((32,239,156))
 
     # Disegno pista, disegno e movimento macchine
-    #pista.draw()
-    #bordo_pista.draw()
     screen.blit(circuito, (0,0))
     P1.move()
     P1.draw(screen)
