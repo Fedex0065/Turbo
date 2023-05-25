@@ -26,12 +26,17 @@ finish= pygame.image.load('immagini/finish.png')
 finish_mask= pygame.mask.from_surface(finish)
 white=(255, 255, 255)
 
+check1=pygame.image.load('immagini/point.png')
+check1_mask=pygame.mask.from_surface(check1)
+check2=pygame.image.load('immagini/point.png')
+check2_mask=pygame.mask.from_surface(check2)
+
 # Serve per scegliere carattere e grandezza del testo
 font = pygame.font.SysFont('comicsans', 50)
 
 # Classi Car e Pista
-P1= Car(screen, rossa, (930, 350), (20, 35))
-P2= Car(screen, blu, (900, 350), (20, 35))
+P1= Car(screen, rossa, (930, 344), (20, 35))
+P2= Car(screen, blu, (900, 344), (20, 35))
 
 def draw(screen, immagini, P1, P2, Informazioni_Game):
 
@@ -131,6 +136,10 @@ while True:
     screen.blit(circuito, (0,0))
     screen.blit(finish, (880, 380)) 
     screen.blit(bordo_circuito, (0,0))
+
+    screen.blit(check1, (465,350))
+    screen.blit(check2, (915,400))
+
     P1.move()
     P1.draw(screen)
     P2.move()
