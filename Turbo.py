@@ -30,8 +30,8 @@ white=(255, 255, 255)
 font = pygame.font.SysFont('comicsans', 50)
 
 # Classi Car e Pista
-P1= Car(screen, rossa, (930, 370), (20, 35))
-P2= Car(screen, blu, (900, 370), (20, 35))
+P1= Car(screen, rossa, (930, 350), (20, 35))
+P2= Car(screen, blu, (900, 350), (20, 35))
 
 def draw(screen, immagini, P1, P2, Informazioni_Game):
 
@@ -45,8 +45,6 @@ def draw(screen, immagini, P1, P2, Informazioni_Game):
     # P1.draw(win)
     # P2.draw(win)
     pygame.display.update()
-
-
 
 def draw_text(text):
     text_surface = font.render(text, True, (255, 255, 255))
@@ -75,7 +73,7 @@ def countdown_timer(seconds):
 draw_text("Press SPACE to start")
 wait_for_input()
 
-countdown_timer(5)
+countdown_timer(0)
 
 # Ciclo fondamentale con aggiunta tasti
 while True:
@@ -131,7 +129,7 @@ while True:
 
     # Disegno pista, disegno e movimento macchine
     screen.blit(circuito, (0,0))
-    screen.blit(finish, (880, 350)) 
+    screen.blit(finish, (880, 380)) 
     screen.blit(bordo_circuito, (0,0))
     P1.move()
     P1.draw(screen)
@@ -146,14 +144,18 @@ while True:
         P2.rimbalzo(P2mov)
 
     # Collisione con il finish
-    fine_P1 = P1.collisione(finish_mask, *(880, 350))
+    fine_P1 = P1.collisione(finish_mask, *(880, 380))
     if fine_P1 != None:
         if fine_P1[1] == 0:
+            P1.rimbalzo(P1mov)
+        else:
             print("P1 finish")
     
-    fine_P2 = P2.collisione(finish_mask, *(880, 350))
+    fine_P2 = P2.collisione(finish_mask, *(880, 380))
     if fine_P2 != None:
         if fine_P2[1] == 0:
+            P2.rimbalzo(P2mov)
+        else:
             print("P2 finish")
 
     # Aggiorno schermo e clock
