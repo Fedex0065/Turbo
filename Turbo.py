@@ -45,19 +45,15 @@ def draw(screen, immagini, P1, P2, Informazioni_Game):
     # P1.draw(win)
     # P2.draw(win)
     pygame.display.update()
-    
+
+
+
 def draw_text(text):
     text_surface = font.render(text, True, (255, 255, 255))
     text_rect = text_surface.get_rect(center=(lunghezza_schermo/2, altezza_schermo/2))
     screen.fill((0, 0, 0))
     screen.blit(text_surface, text_rect)
     pygame.display.flip()
-
-def countdown_timer(seconds):
-    while seconds >= 0:
-        draw_text(str(seconds))
-        seconds -= 1
-        time.sleep(1)
 
 def wait_for_input():
     waiting = True
@@ -70,18 +66,16 @@ def wait_for_input():
                 if event.key == pygame.K_SPACE:
                     waiting = False
 
-def game_logic():
-    # Logica del gioco qui
-    pass
+def countdown_timer(seconds):
+    while seconds >= 0:
+        draw_text(str(seconds))
+        seconds -= 1
+        time.sleep(1)
 
 draw_text("Press SPACE to start")
 wait_for_input()
 
 countdown_timer(5)
-
-# Avvio del gioco dopo il conto alla rovescia
-game_logic()
-
 
 # Ciclo fondamentale con aggiunta tasti
 while True:
