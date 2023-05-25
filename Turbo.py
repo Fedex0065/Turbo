@@ -1,7 +1,6 @@
 import pygame, sys, time
 from pygame.locals import *
 from car import Car
-from Livelli_Gioco import GameInfo
 from utils import blit_text_center
 pygame.font.init()
 
@@ -27,14 +26,8 @@ finish= pygame.image.load('immagini/finish.png')
 finish_mask= pygame.mask.from_surface(finish)
 white=(255, 255, 255)
 
-#___________________________________________________________________
-
-# Classe per i livelli e le scritte
-Informazioni_Game = GameInfo()
-
 # Serve per scegliere carattere e grandezza del testo
 font = pygame.font.SysFont('comicsans', 50)
-#___________________________________________________________________
 
 # Classi Car e Pista
 P1= Car(screen, rossa, (930, 370), (20, 35))
