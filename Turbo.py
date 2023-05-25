@@ -1,6 +1,9 @@
 import pygame, sys
 from pygame.locals import *
 from car import Car
+from Livelli_Gioco import GameInfo
+from utils import blit_text_center
+pygame.font.init()
 
 # Creazione finestra
 pygame.init()
@@ -18,13 +21,51 @@ gialla=pygame.image.load('immagini/macchina_gialla.png')
 circuito=pygame.image.load('Circuiti/3.png')
 bordo_circuito=pygame.image.load('Circuiti/4.png')
 bordo_circuito_mask= pygame.mask.from_surface(bordo_circuito)
+finish= pygame.image.load('immagini/finish.png')
+finish_mask= pygame.mask.from_surface(finish)
+immagini = [(circuito, (0, 0)), (finish, (880, 350)), (bordo_circuito, (0, 0))]
+
+# Classe per i livelli e le scritte
+Informazioni_Game = GameInfo()
+
+# Serve per scegliere carattere e grandezza del testo
+font = pygame.font.SysFont('comicsans', 50)
 
 # Classi Car e Pista
-P1= Car(screen, rossa, (930, 350), (20, 35))
-P2= Car(screen, blu, (900, 350), (20, 35))
+P1= Car(screen, rossa, (930, 370), (20, 35))
+P2= Car(screen, blu, (900, 370), (20, 35))
+
+def draw(screen, immagini, P1, P2, Informazioni_Game):
+    for img, pos in immagini:
+        screen.blit(img, pos)
+
+    time_text = font.render(f"Time: {Informazioni_Game.get_level_time()}s", 1, (255, 255, 255))
+    screen.blit(time_text, (10, circuito.get_height - time_text.get_height() - 40))
+
+    vel_text = font.render(
+        f"Vel: {round(P1.vel, 1)}px/s", 1, (255, 255, 255))
+    screen.blit(vel_text, (10, circuito.get_height - vel_text.get_height() - 10))
+
+    # P1.draw(win)
+    # P2.draw(win)
+    pygame.display.update()
+    
+
 
 # Ciclo fondamentale con aggiunta tasti
 while True:
+
+    # Mettere le scritte
+    while not Informazioni_Game.started:
+        blit_text_center(screen, font, f"schiaccia un tasto qualsiasi per giocare!!")
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                break
+
+            if event.type == pygame.KEYDOWN:
+                Informazioni_Game.start_level()
 
     # Chiusura finestra
     for event in pygame.event.get():
@@ -77,6 +118,8 @@ while True:
 
     # Disegno pista, disegno e movimento macchine
     screen.blit(circuito, (0,0))
+    screen.blit(finish, (880, 350)) 
+    screen.blit(bordo_circuito, (0,0))
     P1.move()
     P1.draw(screen)
     P2.move()
@@ -89,7 +132,17 @@ while True:
     if P2.collisione(bordo_circuito_mask, 0, 0) != None:
         P2.rimbalzo(P2mov)
 
+    # Collisione con il finish
+    fine_P1 = P1.collisione(finish_mask, *(880, 350))
+    if fine_P1 != None:
+        if fine_P1[1] == 0:
+            print("P1 finish")
+    
+    fine_P2 = P2.collisione(finish_mask, *(880, 350))
+    if fine_P2 != None:
+        if fine_P2[1] == 0:
+            print("P2 finish")
+
     # Aggiorno schermo e clock
     pygame.display.flip()
     clock.tick(60)
-    
