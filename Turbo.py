@@ -1,5 +1,6 @@
 import pygame, sys, time
 from pygame.locals import *
+from pygame import mixer
 from car import Car
 from utils import blit_text_center
 pygame.font.init()
@@ -82,6 +83,10 @@ draw_text("Press SPACE to start", "TURBO")
 wait_for_input()
 countdown_timer(3)
 counter=0
+
+# caricare l'audio e fralo partire
+audio = pygame.mixer.Sound("turbo_audio.mp3")
+pygame.mixer.Sound.play(audio)
 
 # Ciclo fondamentale con aggiunta tasti
 while True:
