@@ -139,8 +139,6 @@ while True:
     screen.blit(circuito, (0,0))
     screen.blit(finish, (880, 380)) 
     screen.blit(bordo_circuito, (0,0))
-    screen.blit(check1, (465,350))
-    screen.blit(check2, (915,400))
     P1.draw(screen)
     P2.draw(screen)
 
