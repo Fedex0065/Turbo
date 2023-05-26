@@ -166,13 +166,13 @@ while True:
         counter=2
 
     # Collisione con il finish
-    fine_P1 = P1.collisione(finish_mask, *(880, 380))
+    fine_P1 = P1.collisione(finish_mask, 880, 380)
     if fine_P1 != None and counter == 2:
         print("P1 ha vinto")
         # al posto di ha vinto dobbiamo aumentrare i giri che all'inizio devono essere = 0
         counter = 0
 
-    fine_P2 = P2.collisione(finish_mask, *(880, 380))
+    fine_P2 = P2.collisione(finish_mask, 880, 380)
     if fine_P2 != None and counter == 2:
         print("P2 ha vinto")
         # al posto di ha vinto dobbiamo aumentrare i giri che all'inizio devono essere = 0
