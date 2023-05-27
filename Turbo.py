@@ -86,6 +86,10 @@ countdown_timer(3)
 P1counter=0
 P2counter=0
 
+# caricare l'audio e fralo partire
+audio = pygame.mixer.Sound("turbo_audio.mp3")
+pygame.mixer.Sound.play(audio)
+
 # Ciclo fondamentale con aggiunta tasti
 while True:
 
