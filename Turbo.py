@@ -22,12 +22,9 @@ bordo_circuito_mask= pygame.mask.from_surface(bordo_circuito)
 finish= pygame.image.load('immagini/finish.png')
 finish_mask= pygame.mask.from_surface(finish)
 
-check1=pygame.image.load('immagini/point.png')
-check1_mask=pygame.mask.from_surface(check1)
-check2=pygame.image.load('immagini/point.png')
-check2_mask=pygame.mask.from_surface(check2)
-check3=pygame.image.load('immagini/point.png')
-check3_mask=pygame.mask.from_surface(check3)
+check1_mask=pygame.mask.from_surface(pygame.image.load('immagini/point.png'))
+check2_mask=pygame.mask.from_surface(pygame.image.load('immagini/point.png'))
+check3_mask=pygame.mask.from_surface(pygame.image.load('immagini/point.png'))
 
 # Serve per scegliere carattere e grandezza del testo
 font = pygame.font.SysFont('comicsans', 50)
