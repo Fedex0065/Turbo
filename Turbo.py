@@ -33,18 +33,6 @@ font = pygame.font.SysFont('comicsans', 50)
 P1= Car(screen, rossa, (930, 344), (20, 35))
 P2= Car(screen, blu, (900, 344), (20, 35))
 
-def draw(screen, immagini, P1, P2, Informazioni_Game):
-
-    time_text = font.render(f"Time: {Informazioni_Game.get_level_time()}s", 1, (255, 255, 255))
-    screen.blit(time_text, (10, circuito.get_height - time_text.get_height() - 40))
-
-    vel_text = font.render(f"Vel: {round(P1.vel, 1)}px/s", 1, (255, 255, 255))
-    screen.blit(vel_text, (10, circuito.get_height - vel_text.get_height() - 10))
-
-    # P1.draw(win)
-    # P2.draw(win)
-    pygame.display.update()
-
 # Schermata iniziale con titolo
 def draw_text(text, title):
     text_surface = font.render(text, True, (255, 255, 255))
@@ -76,6 +64,16 @@ def countdown_timer(seconds):
             draw_text("VIA!", "TURBO")
         seconds -= 1
         time.sleep(1)
+
+# conta i giri dei due giocatori
+P1_giri = 0 
+P2_giri = 0 
+def contagiri(P1_giri, P2_giri):
+    font = pygame.font.SysFont(None, 25)
+    testo = font.render("P1 giri: " + str(P1_giri), True, (0, 0, 0))
+    testo2 = font.render("P2 giri: " + str(P2_giri), True, (0, 0, 0))
+    screen.blit(testo, (920, 10))
+    screen.blit(testo2, (920, 30))
 
 draw_text("Press SPACE to start", "TURBO")
 wait_for_input()
@@ -174,14 +172,31 @@ while True:
     if fine_P1 != None and P1counter == 3:
         print("P1 ha vinto")
         # al posto di ha vinto dobbiamo aumentrare i giri che all'inizio devono essere = 0
+        P1_giri += 1
         P1counter = 0
 
     fine_P2 = P2.collisione(finish_mask, 880, 380)
     if fine_P2 != None and P2counter == 3:
         print("P2 ha vinto")
         # al posto di ha vinto dobbiamo aumentrare i giri che all'inizio devono essere = 0
+        P2_giri += 1
         P2counter = 0
 
+    # richiamo la funzione dei giri
+    contagiri(P1_giri, P2_giri)
+
+    if P1_giri == 3:
+        testo_giri = font.render("P1 WIN !!!", True, (255, 255, 255))
+        testo_giri_finale = testo_giri.get_rect(center=(lunghezza_schermo/2, altezza_schermo/2))
+        screen.fill((0, 0, 0))
+        screen.blit(testo_giri, testo_giri_finale)
+    
+    if P2_giri == 3:
+        testo_giri = font.render("P2 WIN !!!", True, (255, 255, 255))
+        testo_giri_finale = testo_giri.get_rect(center=(lunghezza_schermo/2, altezza_schermo/2))
+        screen.fill((0, 0, 0))
+        screen.blit(testo_giri, testo_giri_finale)
+    
     # Aggiorno schermo e clock
     pygame.display.flip()
     clock.tick(60)
