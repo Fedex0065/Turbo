@@ -59,4 +59,6 @@ class Car:
         blit_rotate_center(schermo, self.image, (self.x, self.y), self.angolo)
 
     def draw_reset(self, schermo, pos):
-        blit_rotate_center(schermo, self.image, (pos[0], pos[1]), 0)
+        self.x, self.y= pos
+        self.angolo=0
+        blit_rotate_center(schermo, self.image, (self.x, self.y), self.angolo)

@@ -23,17 +23,32 @@ finish= pygame.image.load('immagini/finish.png')
 finish_mask= pygame.mask.from_surface(finish)
 sfondo=pygame.transform.scale((pygame.image.load("immagini/Stelle.jpg")),(lunghezza_schermo, altezza_schermo))
 
+# Checkpoint
 check1_mask=pygame.mask.from_surface(pygame.image.load('immagini/point.png'))
 check2_mask=pygame.mask.from_surface(pygame.image.load('immagini/point.png'))
 check3_mask=pygame.mask.from_surface(pygame.image.load('immagini/point.png'))
+
+# Classi Car
+P1= Car(screen, rossa, (930, 344), (20, 35))
+P2= Car(screen, blu, (900, 344), (20, 35))
+
+# Classi Pulsante
+reset=Pulsante(screen, (200, 500), (200, 100))
+exit=Pulsante(screen, (600, 500), (200, 100))
 
 # Serve per scegliere carattere e grandezza del testo
 font1 = pygame.font.SysFont('comicsans', 50)
 font2 = pygame.font.SysFont('comicsans', 150)
 
-# Classi Car e Pista
-P1= Car(screen, rossa, (930, 344), (20, 35))
-P2= Car(screen, blu, (900, 344), (20, 35))
+# Variabili varie
+P1counter=0
+P2counter=0
+P1_giri = 0 
+P2_giri = 0
+tick = 0
+secondi = 0
+minuti = 0
+finale=0
 
 # Schermata iniziale con titolo
 def draw_text(text, title):
@@ -41,7 +56,6 @@ def draw_text(text, title):
     text_rect = text_surface.get_rect(center=(lunghezza_schermo/2, altezza_schermo/2))
     title_surface = font1.render(title, True, (255, 255, 255))
     title_rect = title_surface.get_rect(center=(lunghezza_schermo/2, altezza_schermo/4))
-    #screen.blit(sfondo, (0,0))
     screen.blit(sfondo, (0,0))
     screen.blit(text_surface, text_rect)
     screen.blit(title_surface, title_rect)
@@ -68,9 +82,7 @@ def countdown_timer(seconds):
         seconds -= 1
         time.sleep(1)
 
-# conta i giri dei due giocatori
-P1_giri = 0 
-P2_giri = 0 
+# Conta i giri dei due giocatori
 def contagiri(P1_giri, P2_giri):
     font = pygame.font.SysFont(None, 35)
     testo = font.render(f"P1: {str(P1_giri)}/3", True, (255, 255, 255))
@@ -78,29 +90,20 @@ def contagiri(P1_giri, P2_giri):
     screen.blit(testo, (550, 10))
     screen.blit(testo2, (550, 35))
 
-
 # Audio e Tempo
 inizio = pygame.mixer.Sound("Love nwantiti.mp3")
+countdown = pygame.mixer.Sound("countdown.mp3")
+audio = pygame.mixer.Sound("turbo_audio.mp3")
+win = pygame.mixer.Sound("We are the champions.mp3")
+
 pygame.mixer.Sound.play(inizio, -1)
 draw_text("Press SPACE to start", "TURBO")
 wait_for_input()
 pygame.mixer.Sound.stop(inizio)
-countdown = pygame.mixer.Sound("countdown.mp3")
 pygame.mixer.Sound.play(countdown)
 countdown_timer(3)
-audio = pygame.mixer.Sound("turbo_audio.mp3")
+pygame.mixer.Sound.stop(countdown)
 pygame.mixer.Sound.play(audio, -1)
-win = pygame.mixer.Sound("We are the champions.mp3")
-
-P1counter=0
-P2counter=0
-tick = 0
-secondi = 0
-minuti = 0
-finale=0
-
-reset=Pulsante(screen, (200, 500), (200, 100))
-exit=Pulsante(screen, (600, 500), (200, 100))
 
 # Ciclo fondamentale con aggiunta tasti
 while True:
@@ -110,6 +113,8 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        
+        # Pulsanti Exit e Reset
         if event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
             pos=pygame.mouse.get_pos()
             if exit.rect.collidepoint(pos):
@@ -130,7 +135,7 @@ while True:
                 pygame.mixer.Sound.play(audio, -1)
                 
 
-    # Tasti movimento 1
+    # Tasti movimento P1
     keys = pygame.key.get_pressed()
 
     if keys[K_RIGHT]:
@@ -142,12 +147,11 @@ while True:
     if keys[K_UP]:
         P1.move_forward()
         P1mov=1
-    
-    if keys[K_DOWN]:
+    elif keys[K_DOWN]:
         P1.move_backward()
         P1mov=-1
 
-    # Tasti movimento 2
+    # Tasti movimento P2
     if keys[K_d]:
         P2.rotazione(right=True)
 
@@ -157,8 +161,7 @@ while True:
     if keys[K_w]:
         P2.move_forward()
         P2mov=1
-    
-    if keys[K_s]:
+    elif keys[K_s]:
         P2.move_backward()
         P2mov=-1
 
@@ -172,7 +175,7 @@ while True:
     P1.draw(screen)
     P2.draw(screen)
 
-    # Collisione
+    # Collisione pista
     if P1.collisione(bordo_circuito_mask, 0, 0) != None:
         P1.rimbalzo(P1mov)
     
@@ -206,11 +209,12 @@ while True:
         P2_giri += 1
         P2counter = 0
 
-    # richiamo la funzione dei giri
+    # Richiamo la funzione dei giri
     contagiri(P1_giri, P2_giri)
     
+    # Cronometro
+
     pygame.draw.rect(screen, (255, 255, 255), (700, 15, 142, 35))
-    
     tick += 1
 
     if tick == 60:
@@ -235,6 +239,7 @@ while True:
             tempo = font.render(f"00:0{minuti}:{secondi}", True, (0, 0, 0))
             screen.blit(tempo, (700, 16))
 
+    # Controllo vincitore
     if P1_giri == 3:
         testo_giri = font2.render("P1 WIN !!!", True, (255, 255, 255))
         testo_giri_finale = testo_giri.get_rect(center=(lunghezza_schermo/2, altezza_schermo/2))
