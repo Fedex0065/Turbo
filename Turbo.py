@@ -91,10 +91,10 @@ def contagiri(P1_giri, P2_giri):
     screen.blit(testo2, (550, 35))
 
 # Audio e Tempo
-inizio = pygame.mixer.Sound("Love nwantiti.mp3")
-countdown = pygame.mixer.Sound("countdown.mp3")
-audio = pygame.mixer.Sound("turbo_audio.mp3")
-win = pygame.mixer.Sound("We are the champions.mp3")
+inizio = pygame.mixer.Sound("musiche/Love nwantiti.mp3")
+countdown = pygame.mixer.Sound("musiche/countdown.mp3")
+audio = pygame.mixer.Sound("musiche/turbo_audio.mp3")
+win = pygame.mixer.Sound("musiche/We are the champions.mp3")
 
 pygame.mixer.Sound.play(inizio, -1)
 draw_text("Press SPACE to start", "TURBO")
