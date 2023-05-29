@@ -69,11 +69,11 @@ def countdown_timer(seconds):
 P1_giri = 0 
 P2_giri = 0 
 def contagiri(P1_giri, P2_giri):
-    font = pygame.font.SysFont(None, 25)
-    testo = font.render("P1 giri: " + str(P1_giri), True, (0, 0, 0))
-    testo2 = font.render("P2 giri: " + str(P2_giri), True, (0, 0, 0))
-    screen.blit(testo, (920, 10))
-    screen.blit(testo2, (920, 30))
+    font = pygame.font.SysFont(None, 35)
+    testo = font.render(f"P1: {str(P1_giri)}/3", True, (0, 0, 0))
+    testo2 = font.render(f"P2: {str(P2_giri)}/3", True, (0, 0, 0))
+    screen.blit(testo, (550, 10))
+    screen.blit(testo2, (550, 35))
 
 draw_text("Press SPACE to start", "TURBO")
 wait_for_input()
@@ -84,8 +84,12 @@ P1counter=0
 P2counter=0
 
 # caricare l'audio e fralo partire
-audio = pygame.mixer.Sound("turbo_audio.mp3")
-pygame.mixer.Sound.play(audio, -1)
+# audio = pygame.mixer.Sound("turbo_audio.mp3")
+# pygame.mixer.Sound.play(audio, -1)
+
+tick = 0
+secondi = 0
+minuti = 0
 
 # Ciclo fondamentale con aggiunta tasti
 while True:
@@ -185,6 +189,33 @@ while True:
         screen.fill((0, 0, 0))
         screen.blit(testo_giri, testo_giri_finale)
     
+    pygame.draw.rect(screen, (200, 200, 200), (700, 80, 250, 35))
+    
+    tick += 1
+    if tick == 60:
+        secondi += 1
+        tick = 0
+        if secondi < 10:
+            font = pygame.font.SysFont(None, 50)
+            tempo = font.render(f"00:0{minuti}:0{secondi}", True, (0, 0, 0))
+            screen.blit(tempo, (700, 80))
+        elif secondi >= 10:
+            font = pygame.font.SysFont(None, 50)
+            tempo = font.render(f"00:0{minuti}:{secondi}", True, (0, 0, 0))
+            screen.blit(tempo, (700, 80))
+        if secondi == 60:
+            minuti += 1
+            secondi = 0
+    else:
+        if secondi < 10:
+            font = pygame.font.SysFont(None, 50)
+            tempo = font.render(f"00:0{minuti}:0{secondi}", True, (0, 0, 0))
+            screen.blit(tempo, (700, 80))
+        elif secondi >= 10:
+            font = pygame.font.SysFont(None, 50)
+            tempo = font.render(f"00:0{minuti}:{secondi}", True, (0, 0, 0))
+            screen.blit(tempo, (700, 80))
+
     # Aggiorno schermo e clock
     pygame.display.flip()
     clock.tick(60)
