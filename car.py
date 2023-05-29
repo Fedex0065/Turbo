@@ -39,10 +39,6 @@ class Car:
         self.y -= verticale
         self.x -= orizzontale
 
-    # Stop movimento
-    def stop(self):
-        self.vel= 0
-
     # Collisione
     def collisione(self, mask, x=0, y=0):
         car_mask= pygame.mask.from_surface(self.image)

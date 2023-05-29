@@ -77,6 +77,8 @@ def contagiri(P1_giri, P2_giri):
 
 draw_text("Press SPACE to start", "TURBO")
 wait_for_input()
+countdown = pygame.mixer.Sound("countdown_def_finale.mp3")
+pygame.mixer.Sound.play(countdown)
 countdown_timer(3)
 P1counter=0
 P2counter=0
@@ -106,14 +108,9 @@ while True:
     if keys[K_UP]:
         P1.move_forward()
         P1mov=1
-    else:
-        P1.stop()
-
-    if keys[K_DOWN]:
+    elif keys[K_DOWN]:
         P1.move_backward()
         P1mov=-1
-    else:
-        P1.stop()
 
     # Tasti movimento 2
     if keys[K_d]:
@@ -125,14 +122,9 @@ while True:
     if keys[K_w]:
         P2.move_forward()
         P2mov=1
-    else:
-        P2.stop()
-
-    if keys[K_s]:
+    elif keys[K_s]:
         P2.move_backward()
         P2mov=-1
-    else:
-        P2.stop()
 
     # Colore sfondo
     screen.fill((32,239,156))
@@ -170,15 +162,11 @@ while True:
     # Collisione con il finish
     fine_P1 = P1.collisione(finish_mask, 880, 380)
     if fine_P1 != None and P1counter == 3:
-        print("P1 ha vinto")
-        # al posto di ha vinto dobbiamo aumentrare i giri che all'inizio devono essere = 0
         P1_giri += 1
         P1counter = 0
 
     fine_P2 = P2.collisione(finish_mask, 880, 380)
     if fine_P2 != None and P2counter == 3:
-        print("P2 ha vinto")
-        # al posto di ha vinto dobbiamo aumentrare i giri che all'inizio devono essere = 0
         P2_giri += 1
         P2counter = 0
 
