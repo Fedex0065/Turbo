@@ -11,7 +11,7 @@ class Car:
         self.image = pygame.transform.scale(self.image, size)
         self.x, self.y = pos[0], pos[1]
         self.vel= 0
-        self.vel_rot= 3
+        self.vel_rot= 3.5
         self.angolo= 0
 
     # Funzione per ruotare la macchina (incremento o riduco l'angolo in base alla velocità di rotazione)
@@ -57,3 +57,6 @@ class Car:
     # Disegno macchina su schermo
     def draw(self, schermo):
         blit_rotate_center(schermo, self.image, (self.x, self.y), self.angolo)
+
+    def draw_reset(self, schermo, pos):
+        blit_rotate_center(schermo, self.image, (pos[0], pos[1]), 0)

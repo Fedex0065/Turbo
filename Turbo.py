@@ -1,6 +1,7 @@
 import pygame, sys, time
 from pygame.locals import *
 from car import Car
+from pulsante import Pulsante
 pygame.font.init()
 
 # Creazione finestra
@@ -15,19 +16,20 @@ clock = pygame.time.Clock()
 # Variabili colore macchina e sfondo
 rossa=pygame.image.load('immagini/macchina_rossa.png')
 blu=pygame.image.load('immagini/macchina_blu.png')
-circuito=pygame.image.load('Circuiti/3.png')
-bordo_circuito=pygame.image.load('Circuiti/4.png')
+circuito=pygame.image.load('immagini/circuito.png')
+bordo_circuito=pygame.image.load('immagini/bordo_circuito.png')
 bordo_circuito_mask= pygame.mask.from_surface(bordo_circuito)
 finish= pygame.image.load('immagini/finish.png')
 finish_mask= pygame.mask.from_surface(finish)
-sfondo=pygame.transform.scale((pygame.image.load("immagini/stelle.jpg")),(lunghezza_schermo, altezza_schermo))
+sfondo=pygame.transform.scale((pygame.image.load("immagini/Stelle.jpg")),(lunghezza_schermo, altezza_schermo))
 
 check1_mask=pygame.mask.from_surface(pygame.image.load('immagini/point.png'))
 check2_mask=pygame.mask.from_surface(pygame.image.load('immagini/point.png'))
 check3_mask=pygame.mask.from_surface(pygame.image.load('immagini/point.png'))
 
 # Serve per scegliere carattere e grandezza del testo
-font = pygame.font.SysFont('comicsans', 50)
+font1 = pygame.font.SysFont('comicsans', 50)
+font2 = pygame.font.SysFont('comicsans', 150)
 
 # Classi Car e Pista
 P1= Car(screen, rossa, (930, 344), (20, 35))
@@ -35,10 +37,11 @@ P2= Car(screen, blu, (900, 344), (20, 35))
 
 # Schermata iniziale con titolo
 def draw_text(text, title):
-    text_surface = font.render(text, True, (255, 255, 255))
+    text_surface = font1.render(text, True, (255, 255, 255))
     text_rect = text_surface.get_rect(center=(lunghezza_schermo/2, altezza_schermo/2))
-    title_surface = font.render(title, True, (255, 255, 255))
+    title_surface = font1.render(title, True, (255, 255, 255))
     title_rect = title_surface.get_rect(center=(lunghezza_schermo/2, altezza_schermo/4))
+    #screen.blit(sfondo, (0,0))
     screen.blit(sfondo, (0,0))
     screen.blit(text_surface, text_rect)
     screen.blit(title_surface, title_rect)
@@ -75,7 +78,9 @@ def contagiri(P1_giri, P2_giri):
     screen.blit(testo, (550, 10))
     screen.blit(testo2, (550, 35))
 
-inizio = pygame.mixer.Sound("Love Nwantiti.mp3")
+
+# Audio e Tempo
+inizio = pygame.mixer.Sound("Love nwantiti.mp3")
 pygame.mixer.Sound.play(inizio, -1)
 draw_text("Press SPACE to start", "TURBO")
 wait_for_input()
@@ -83,18 +88,19 @@ pygame.mixer.Sound.stop(inizio)
 countdown = pygame.mixer.Sound("countdown.mp3")
 pygame.mixer.Sound.play(countdown)
 countdown_timer(3)
-P1counter=0
-P2counter=0
-
-# caricare l'audio e fralo partire
 audio = pygame.mixer.Sound("turbo_audio.mp3")
 pygame.mixer.Sound.play(audio, -1)
 win = pygame.mixer.Sound("We are the champions.mp3")
 
+P1counter=0
+P2counter=0
 tick = 0
 secondi = 0
 minuti = 0
 finale=0
+
+reset=Pulsante(screen, (200, 500), (200, 100))
+exit=Pulsante(screen, (600, 500), (200, 100))
 
 # Ciclo fondamentale con aggiunta tasti
 while True:
@@ -104,6 +110,25 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
+            pos=pygame.mouse.get_pos()
+            if exit.rect.collidepoint(pos):
+                pygame.quit()
+                sys.exit()
+            if reset.rect.collidepoint(pos):
+                P1_giri=0
+                P2_giri=0
+                screen.blit(sfondo, (0,0))
+                screen.blit(circuito, (0,0))
+                screen.blit(finish, (880, 380)) 
+                screen.blit(bordo_circuito, (0,0))
+                P1.draw_reset(screen, (930, 344))
+                P2.draw_reset(screen, (900, 344))
+                secondi=0
+                minuti=0
+                pygame.mixer.Sound.stop(win)
+                pygame.mixer.Sound.play(audio, -1)
+                
 
     # Tasti movimento 1
     keys = pygame.key.get_pressed()
@@ -117,7 +142,8 @@ while True:
     if keys[K_UP]:
         P1.move_forward()
         P1mov=1
-    elif keys[K_DOWN]:
+    
+    if keys[K_DOWN]:
         P1.move_backward()
         P1mov=-1
 
@@ -131,7 +157,8 @@ while True:
     if keys[K_w]:
         P2.move_forward()
         P2mov=1
-    elif keys[K_s]:
+    
+    if keys[K_s]:
         P2.move_backward()
         P2mov=-1
 
@@ -181,57 +208,60 @@ while True:
 
     # richiamo la funzione dei giri
     contagiri(P1_giri, P2_giri)
+    
+    pygame.draw.rect(screen, (255, 255, 255), (700, 15, 142, 35))
+    
+    tick += 1
+
+    if tick == 60:
+        secondi += 1
+        tick = 0
+        font = pygame.font.SysFont(None, 50)
+        if secondi < 10:
+            tempo = font.render(f"00:0{minuti}:0{secondi}", True, (0, 0, 0))
+            screen.blit(tempo, (700, 16))
+        elif secondi >= 10:
+            tempo = font.render(f"00:0{minuti}:{secondi}", True, (0, 0, 0))
+            screen.blit(tempo, (700, 16))
+        if secondi == 60:
+            minuti += 1
+            secondi = 0
+    else:
+        font = pygame.font.SysFont(None, 50)
+        if secondi < 10:
+            tempo = font.render(f"00:0{minuti}:0{secondi}", True, (0, 0, 0))
+            screen.blit(tempo, (700, 16))
+        elif secondi >= 10:
+            tempo = font.render(f"00:0{minuti}:{secondi}", True, (0, 0, 0))
+            screen.blit(tempo, (700, 16))
 
     if P1_giri == 3:
-        testo_giri = font.render("P1 WIN !!!", True, (255, 255, 255))
+        testo_giri = font2.render("P1 WIN !!!", True, (255, 255, 255))
         testo_giri_finale = testo_giri.get_rect(center=(lunghezza_schermo/2, altezza_schermo/2))
         screen.blit(sfondo, (0,0))
         screen.blit(testo_giri, testo_giri_finale)
+        pygame.draw.rect(screen, "white", exit)
+        exit.draw("Exit")
+        pygame.draw.rect(screen, "white", reset)
+        reset.draw("Reset")
         if finale==0:
             pygame.mixer.Sound.stop(audio)
             pygame.mixer.Sound.play(win)
             finale=1
     
     if P2_giri == 3:
-        testo_giri = font.render("P2 WIN !!!", True, (255, 255, 255))
+        testo_giri = font2.render("P2 WIN !!!", True, (255, 255, 255))
         testo_giri_finale = testo_giri.get_rect(center=(lunghezza_schermo/2, altezza_schermo/2))
-        screen.blit(sfondo, (0,0))
+        screen.blit(sfondo,(0,0))
         screen.blit(testo_giri, testo_giri_finale)
+        pygame.draw.rect(screen, "white", exit)
+        exit.draw("Exit")
+        pygame.draw.rect(screen, "white", reset)
+        reset.draw("Reset")
         if finale==0:
             pygame.mixer.Sound.stop(audio)
             pygame.mixer.Sound.play(win)
-            pygame.mixer.Sound.set_volume(win, 3)
             finale=1
-    
-    pygame.draw.rect(screen, (200, 200, 200), (700, 80, 250, 35))
-    
-    tick += 1
-    if P1_giri!=3 or P2_giri!=3:
-        if tick == 60:
-            secondi += 1
-            tick = 0
-            if secondi < 10:
-                font = pygame.font.SysFont(None, 50)
-                tempo = font.render(f"00:0{minuti}:0{secondi}", True, (0, 0, 0))
-                screen.blit(tempo, (700, 80))
-            elif secondi >= 10:
-                font = pygame.font.SysFont(None, 50)
-                tempo = font.render(f"00:0{minuti}:{secondi}", True, (0, 0, 0))
-                screen.blit(tempo, (700, 80))
-            if secondi == 60:
-                minuti += 1
-                secondi = 0
-        else:
-            if secondi < 10:
-                font = pygame.font.SysFont(None, 50)
-                tempo = font.render(f"00:0{minuti}:0{secondi}", True, (0, 0, 0))
-                screen.blit(tempo, (700, 80))
-            elif secondi >= 10:
-                font = pygame.font.SysFont(None, 50)
-                tempo = font.render(f"00:0{minuti}:{secondi}", True, (0, 0, 0))
-                screen.blit(tempo, (700, 80))
-
-
 
     # Aggiorno schermo e clock
     pygame.display.flip()
